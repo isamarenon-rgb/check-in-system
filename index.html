@@ -6,24 +6,25 @@
     <title>ระบบเช็คชื่อ อบจ.น่าน 3</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="bgOverlay"></div>
     <div id="app">
-        <div id="digitalClock" style="text-align:center; font-size:1.5rem; font-weight:bold; color:var(--main); margin-bottom:20px;"></div>
+        <div id="digitalClock"></div>
         
         <div id="loginPage" class="page active">
-            <div style="background:white; padding:30px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); text-align:center;">
-                <img id="appLogo" src="https://via.placeholder.com/100" style="width:100px; margin-bottom:15px; border-radius:50%;">
+            <div class="card">
+                <img id="appLogo" src="https://via.placeholder.com/100" alt="Logo">
                 <h2>ระบบเช็คชื่อนักเรียน</h2>
-                <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน" style="width:100%; padding:12px; margin:15px 0; border:1px solid #ddd; border-radius:10px; text-align:center;">
-                <button onclick="handleLogin()" style="width:100%; padding:12px; background:var(--main); color:white; border:none; border-radius:10px; cursor:pointer;">เข้าสู่ระบบ</button>
-                <p id="loginError" style="color:red; margin-top:10px;"></p>
+                <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน">
+                <button onclick="handleLogin()">เข้าสู่ระบบ</button>
+                <p id="loginError"></p>
             </div>
         </div>
 
         <div id="gradePage" class="page">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="grade-grid">
                 <button onclick="selectGrade('M1')" class="grade-btn">ม.1</button>
                 <button onclick="selectGrade('M2')" class="grade-btn">ม.2</button>
                 <button onclick="selectGrade('M3')" class="grade-btn">ม.3</button>
@@ -31,16 +32,16 @@
                 <button onclick="selectGrade('M5')" class="grade-btn">ม.5</button>
                 <button onclick="selectGrade('M6')" class="grade-btn">ม.6</button>
             </div>
-            <button onclick="viewAbsenteeReport()" style="width:100%; margin-top:15px; padding:12px; border:1px solid var(--main); border-radius:10px; background:none; color:var(--main);">View Report / Download</button>
-            <button onclick="handleLogout()" style="width:100%; margin-top:10px; background:none; border:none; color:#666; cursor:pointer;">Logout</button>
+            <button onclick="viewAbsenteeReport()" class="secondary-btn">ดูประวัติวันนี้ / โหลด Excel</button>
+            <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
         </div>
 
         <div id="attendancePage" class="page">
-            <h3 id="targetGrade" style="text-align:center;"></h3>
+            <h3 id="targetGrade"></h3>
             <div id="studentList"></div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="goBack()" style="flex:1; padding:12px; background:#666; color:white; border:none; border-radius:10px;">ย้อนกลับ</button>
-                <button onclick="confirmSave()" style="flex:2; padding:12px; background:var(--main); color:white; border:none; border-radius:10px;">บันทึกข้อมูล</button>
+            <div class="btn-group">
+                <button onclick="goBack()" class="back-btn">ย้อนกลับ</button>
+                <button onclick="confirmSave()" class="save-btn">บันทึกข้อมูล</button>
             </div>
         </div>
 
@@ -49,11 +50,10 @@
         </div>
 
         <div id="adminPage" class="page">
-            <h3>ระบบจัดการข้อมูลสำรอง</h3>
+            <h3>ระบบจัดการคลังข้อมูล</h3>
             <div id="masterRecdList"></div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
