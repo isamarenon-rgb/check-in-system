@@ -16,8 +16,7 @@
         <div id="loginPage" class="page active">
             <div class="card">
                 <img id="appLogo" src="http://www.sarathum.ac.th/_files/webconfig/55100466_0_20260422-141609.png" alt="Logo">
-                <h2 style="margin-top:30px;">ระบบเช็คชื่อนักเรียน</h2>
-                <p style="color:#666; font-size:0.9rem;">โรงเรียนสาธุกิจประชาสรรค์ฯ</p>
+                <h2 style="margin-top:35px;">ระบบเช็คชื่อนักเรียน</h2>
                 <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน">
                 <button onclick="handleLogin()" class="save-btn">เข้าสู่ระบบ</button>
                 <p id="loginError" style="color:red; font-size:0.8rem; margin-top:10px;"></p>
@@ -26,7 +25,7 @@
 
         <div id="gradePage" class="page">
             <div class="card" style="margin-top:20px; padding:30px;">
-                <h3 style="margin-top:0;">เลือกชั้นเรียน</h3>
+                <h3>เลือกชั้นเรียน</h3>
                 <div class="grade-grid">
                     <button onclick="selectGrade('M1')" class="grade-btn">ม.1</button>
                     <button onclick="selectGrade('M2')" class="grade-btn">ม.2</button>
@@ -35,7 +34,7 @@
                     <button onclick="selectGrade('M5')" class="grade-btn">ม.5</button>
                     <button onclick="selectGrade('M6')" class="grade-btn">ม.6</button>
                 </div>
-                <button onclick="viewAbsenteeReport()" class="secondary-btn">📄 ดูประวัติ / โหลด Excel</button>
+                <button onclick="viewAbsenteeReport()" class="secondary-btn">📄 ดูประวัติวันนี้</button>
                 <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
             </div>
         </div>
@@ -45,13 +44,25 @@
             <div id="studentList"></div>
             <div class="btn-group">
                 <button onclick="goBack()" class="back-btn">ย้อนกลับ</button>
-                <button onclick="confirmSave()" class="save-btn" style="margin-top:0;">บันทึกข้อมูล</button>
+                <button onclick="confirmSave()" class="save-btn">บันทึกข้อมูล</button>
             </div>
         </div>
 
         <div id="absenteePage" class="page">
             <div class="card" style="margin-top:20px;">
+                <h3>ประวัติการเช็คชื่อวันนี้</h3>
                 <div id="absenteeList"></div>
+                <button onclick="goBack()" class="back-btn" style="margin-top:15px; width:100%;">กลับหน้าหลัก</button>
+            </div>
+        </div>
+
+        <div id="adminPage" class="page">
+            <div class="card" style="margin-top:20px;">
+                <h3>⚙️ Admin Dashboard</h3>
+                <p style="font-size:0.8rem; color:#666;">จัดการคลังข้อมูลและโหลดไฟล์ Excel</p>
+                <div id="adminDataList" style="text-align:left; max-height:300px; overflow-y:auto; margin:15px 0;"></div>
+                <button onclick="downloadExcel()" class="save-btn" style="background:#2e7d32;">💾 ดาวน์โหลด Excel</button>
+                <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
             </div>
         </div>
     </div>
