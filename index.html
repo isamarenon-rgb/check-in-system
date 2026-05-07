@@ -17,15 +17,15 @@
             <div class="card">
                 <img id="appLogo" src="http://www.sarathum.ac.th/_files/webconfig/55100466_0_20260422-141609.png" alt="Logo">
                 <h2 style="margin-top:35px;">ระบบเช็คชื่อนักเรียน</h2>
-                <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน">
+                <input type="password" id="pinInput" placeholder="รหัสผ่าน">
                 <button onclick="handleLogin()" class="save-btn">เข้าสู่ระบบ</button>
-                <p id="loginError" style="color:red; font-size:0.8rem; margin-top:10px;"></p>
+                <p id="loginError" style="color:red; font-size:0.8rem;"></p>
             </div>
         </div>
 
         <div id="gradePage" class="page">
             <div class="card" style="margin-top:20px; padding:30px;">
-                <h3>เลือกชั้นเรียน</h3>
+                <h3>เลือกชั้นเรียน (ม.1-ม.6)</h3>
                 <div class="grade-grid">
                     <button onclick="selectGrade('M1')" class="grade-btn">ม.1</button>
                     <button onclick="selectGrade('M2')" class="grade-btn">ม.2</button>
@@ -50,18 +50,17 @@
 
         <div id="absenteePage" class="page">
             <div class="card" style="margin-top:20px;">
-                <h3>ประวัติการเช็คชื่อวันนี้</h3>
+                <h3>ประวัติเช็คชื่อวันนี้</h3>
                 <div id="absenteeList"></div>
-                <button onclick="goBack()" class="back-btn" style="margin-top:15px; width:100%;">กลับหน้าหลัก</button>
+                <button onclick="goBack()" class="back-btn" style="width:100%; margin-top:15px;">กลับ</button>
             </div>
         </div>
 
         <div id="adminPage" class="page">
             <div class="card" style="margin-top:20px;">
                 <h3>⚙️ Admin Dashboard</h3>
-                <p style="font-size:0.8rem; color:#666;">จัดการคลังข้อมูลและโหลดไฟล์ Excel</p>
-                <div id="adminDataList" style="text-align:left; max-height:300px; overflow-y:auto; margin:15px 0;"></div>
-                <button onclick="downloadExcel()" class="save-btn" style="background:#2e7d32;">💾 ดาวน์โหลด Excel</button>
+                <div id="adminDataList" style="text-align:left; max-height:250px; overflow-y:auto; margin:15px 0; border:1px solid #eee; padding:10px;"></div>
+                <button onclick="downloadExcel()" class="save-btn" style="background:#2e7d32;">💾 ดาวน์โหลด Excel ทั้งหมด</button>
                 <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
             </div>
         </div>
