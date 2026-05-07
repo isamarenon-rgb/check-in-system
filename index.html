@@ -1,70 +1,60 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบเช็คชื่อ อบจ.น่าน 3</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-</head>
-<body>
-    <div id="bgOverlay"></div>
-    <div id="app">
-        <div id="digitalClock"></div>
-        
-        <div id="loginPage" class="page active">
-            <div class="card">
-                <img id="appLogo" src="http://www.sarathum.ac.th/_files/webconfig/55100466_0_20260422-141609.png" alt="Logo">
-                <h2 style="margin-top:35px;">ระบบเช็คชื่อนักเรียน</h2>
-                <input type="password" id="pinInput" placeholder="รหัสผ่าน">
-                <button onclick="handleLogin()" class="save-btn">เข้าสู่ระบบ</button>
-                <p id="loginError" style="color:red; font-size:0.8rem;"></p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<div id="bgOverlay"></div>
+<div class="container">
+    <div id="loginPage" class="page active">
+        <div class="glass-card">
+            <img id="appLogo" src="https://via.placeholder.com/80" alt="Logo">
+            <h1>Student Check-in</h1>
+            <div class="input-wrapper">
+                <input type="password" id="pinInput" placeholder="Security PIN">
             </div>
-        </div>
-
-        <div id="gradePage" class="page">
-            <div class="card" style="margin-top:20px; padding:30px;">
-                <h3>เลือกชั้นเรียน (ม.1-ม.6)</h3>
-                <div class="grade-grid">
-                    <button onclick="selectGrade('M1')" class="grade-btn">ม.1</button>
-                    <button onclick="selectGrade('M2')" class="grade-btn">ม.2</button>
-                    <button onclick="selectGrade('M3')" class="grade-btn">ม.3</button>
-                    <button onclick="selectGrade('M4')" class="grade-btn">ม.4</button>
-                    <button onclick="selectGrade('M5')" class="grade-btn">ม.5</button>
-                    <button onclick="selectGrade('M6')" class="grade-btn">ม.6</button>
-                </div>
-                <button onclick="viewAbsenteeReport()" class="secondary-btn">📄 ดูประวัติวันนี้</button>
-                <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
-            </div>
-        </div>
-
-        <div id="attendancePage" class="page">
-            <h3 id="targetGrade" style="text-align:center; color:white; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></h3>
-            <div id="studentList"></div>
-            <div class="btn-group">
-                <button onclick="goBack()" class="back-btn">ย้อนกลับ</button>
-                <button onclick="confirmSave()" class="save-btn">บันทึกข้อมูล</button>
-            </div>
-        </div>
-
-        <div id="absenteePage" class="page">
-            <div class="card" style="margin-top:20px;">
-                <h3>ประวัติเช็คชื่อวันนี้</h3>
-                <div id="absenteeList"></div>
-                <button onclick="goBack()" class="back-btn" style="width:100%; margin-top:15px;">กลับ</button>
-            </div>
-        </div>
-
-        <div id="adminPage" class="page">
-            <div class="card" style="margin-top:20px;">
-                <h3>⚙️ Admin Dashboard</h3>
-                <div id="adminDataList" style="text-align:left; max-height:250px; overflow-y:auto; margin:15px 0; border:1px solid #eee; padding:10px;"></div>
-                <button onclick="downloadExcel()" class="save-btn" style="background:#2e7d32;">💾 ดาวน์โหลด Excel ทั้งหมด</button>
-                <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
-            </div>
+            <p id="loginError" style="color: #ff5252; font-size: 0.8rem; margin: 10px 0;"></p>
+            <button onclick="handleLogin()" class="btn-primary">Login</button>
         </div>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+
+    <div id="gradePage" class="page">
+        <div class="glass-card">
+            <div id="digitalClock">00:00:00</div>
+            <div class="grade-grid">
+                <button onclick="selectGrade('M1')">M.1</button>
+                <button onclick="selectGrade('M2')">M.2</button>
+                <button onclick="selectGrade('M3')">M.3</button>
+                <button onclick="selectGrade('M4')">M.4</button>
+                <button onclick="selectGrade('M5')">M.5</button>
+                <button onclick="selectGrade('M6')">M.6</button>
+            </div>
+            <button onclick="viewAbsenteeReport()" class="btn-secondary">View Report / Download</button>
+            <button onclick="handleLogout()" class="btn-text">Logout</button>
+        </div>
+    </div>
+
+    <div id="attendancePage" class="page">
+        <h2 id="targetGrade"></h2>
+        <div id="studentList"></div>
+        <div class="footer-btns">
+            <button onclick="goBack()" class="btn-secondary">Back</button>
+            <button onclick="confirmSave()" class="btn-primary" style="margin-top:10px;">Save to Cloud</button>
+        </div>
+    </div>
+
+    <div id="absenteePage" class="page">
+        <div class="glass-card">
+            <h2>Daily Report</h2>
+            <button onclick="downloadExcel()" class="btn-download">Download XLSX</button>
+            <div id="absenteeList"></div>
+            <button onclick="goBack()" class="btn-secondary">Back</button>
+        </div>
+    </div>
+
+    <div id="adminPage" class="page">
+        <div class="glass-card">
+            <h2>Admin Setup</h2>
+            <input type="file" id="logoUpload" accept="image/*" style="margin-bottom:10px;">
+            <input type="file" id="bgUpload" accept="image/*" style="margin-bottom:10px;">
+            <button onclick="updateAssets()" class="btn-primary">Apply Assets</button>
+            <div id="masterRecdList" style="margin-top:20px; max-height:200px; overflow-y:auto;"></div>
+            <button onclick="handleLogout()" class="btn-secondary">Logout</button>
+        </div>
+    </div>
+</div>
