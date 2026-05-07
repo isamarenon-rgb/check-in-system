@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบเช็คชื่อ ร.ร. อบจ.น่าน 3</title>
+    <title>ระบบเช็คชื่อ อบจ.น่าน 3</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <div id="bgOverlay"></div>
@@ -16,11 +16,11 @@
         <div id="loginPage" class="page active">
             <div class="card">
                 <img id="appLogo" src="http://www.sarathum.ac.th/_files/webconfig/55100466_0_20260422-141609.png" alt="Logo">
-                <h2 style="margin-top:20px;">ระบบเช็คชื่อนักเรียน</h2>
-                <p style="color:#666;">โรงเรียนองค์การบริหารส่วนจังหวัดน่าน 3 สารธรรม</p>
+                <h2 style="margin-top:30px;">ระบบเช็คชื่อนักเรียน</h2>
+                <p style="color:#666; font-size:0.9rem;">โรงเรียนสาธุกิจประชาสรรค์ฯ</p>
                 <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน">
                 <button onclick="handleLogin()" class="save-btn">เข้าสู่ระบบ</button>
-                <p id="loginError" style="color:red; font-size:0.9rem;"></p>
+                <p id="loginError" style="color:red; font-size:0.8rem; margin-top:10px;"></p>
             </div>
         </div>
 
@@ -36,30 +36,22 @@
                     <button onclick="selectGrade('M6')" class="grade-btn">ม.6</button>
                 </div>
                 <button onclick="viewAbsenteeReport()" class="secondary-btn">📄 ดูประวัติ / โหลด Excel</button>
-                <button onclick="handleLogout()" style="background:none; color:#999; margin-top:15px; font-size:0.9rem;">ออกจากระบบ</button>
+                <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
             </div>
         </div>
 
         <div id="attendancePage" class="page">
-            <h3 id="targetGrade" style="text-align:center; color:white;"></h3>
+            <h3 id="targetGrade" style="text-align:center; color:white; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></h3>
             <div id="studentList"></div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="goBack()" style="background:#666; color:white; flex:1;">ย้อนกลับ</button>
-                <button onclick="confirmSave()" class="save-btn" style="flex:2; margin-top:0;">บันทึกข้อมูล</button>
+            <div class="btn-group">
+                <button onclick="goBack()" class="back-btn">ย้อนกลับ</button>
+                <button onclick="confirmSave()" class="save-btn" style="margin-top:0;">บันทึกข้อมูล</button>
             </div>
         </div>
 
         <div id="absenteePage" class="page">
             <div class="card" style="margin-top:20px;">
                 <div id="absenteeList"></div>
-            </div>
-        </div>
-
-        <div id="adminPage" class="page">
-            <div class="card" style="margin-top:20px;">
-                <h3>⚙️ ตั้งค่าระบบ (Admin)</h3>
-                <div id="masterRecdList"></div>
-                <button onclick="goBack()" class="secondary-btn">กลับหน้าหลัก</button>
             </div>
         </div>
     </div>
