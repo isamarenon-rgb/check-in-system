@@ -16,50 +16,50 @@
         <div id="loginPage" class="page active">
             <div class="card">
                 <img id="appLogo" src="" alt="Logo">
-                <h2>ระบบเช็คชื่อนักเรียน</h2>
+                <h2 style="margin-top:20px;">ระบบเช็คชื่อนักเรียน</h2>
+                <p style="color:#666;">โรงเรียนสาธุกิจประชาสรรค์ฯ</p>
                 <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน">
-                <button onclick="handleLogin()">เข้าสู่ระบบ</button>
-                <p id="loginError"></p>
+                <button onclick="handleLogin()" class="save-btn">เข้าสู่ระบบ</button>
+                <p id="loginError" style="color:red; font-size:0.9rem;"></p>
             </div>
         </div>
 
         <div id="gradePage" class="page">
-            <div class="grade-grid">
-                <button onclick="selectGrade('M1')" class="grade-btn">ม.1</button>
-                <button onclick="selectGrade('M2')" class="grade-btn">ม.2</button>
-                <button onclick="selectGrade('M3')" class="grade-btn">ม.3</button>
-                <button onclick="selectGrade('M4')" class="grade-btn">ม.4</button>
-                <button onclick="selectGrade('M5')" class="grade-btn">ม.5</button>
-                <button onclick="selectGrade('M6')" class="grade-btn">ม.6</button>
+            <div class="card" style="margin-top:20px; padding:30px;">
+                <h3 style="margin-top:0;">เลือกชั้นเรียน</h3>
+                <div class="grade-grid">
+                    <button onclick="selectGrade('M1')" class="grade-btn">ม.1</button>
+                    <button onclick="selectGrade('M2')" class="grade-btn">ม.2</button>
+                    <button onclick="selectGrade('M3')" class="grade-btn">ม.3</button>
+                    <button onclick="selectGrade('M4')" class="grade-btn">ม.4</button>
+                    <button onclick="selectGrade('M5')" class="grade-btn">ม.5</button>
+                    <button onclick="selectGrade('M6')" class="grade-btn">ม.6</button>
+                </div>
+                <button onclick="viewAbsenteeReport()" class="secondary-btn">📄 ดูประวัติ / โหลด Excel</button>
+                <button onclick="handleLogout()" style="background:none; color:#999; margin-top:15px; font-size:0.9rem;">ออกจากระบบ</button>
             </div>
-            <button onclick="viewAbsenteeReport()" class="secondary-btn">ดูประวัติวันนี้ / โหลด Excel</button>
-            <button onclick="handleLogout()" class="text-btn">ออกจากระบบ</button>
         </div>
 
         <div id="attendancePage" class="page">
-            <h3 id="targetGrade"></h3>
+            <h3 id="targetGrade" style="text-align:center; color:white;"></h3>
             <div id="studentList"></div>
-            <div class="btn-group">
-                <button onclick="goBack()" class="back-btn">ย้อนกลับ</button>
-                <button onclick="confirmSave()" class="save-btn">บันทึกข้อมูล</button>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="goBack()" style="background:#666; color:white; flex:1;">ย้อนกลับ</button>
+                <button onclick="confirmSave()" class="save-btn" style="flex:2; margin-top:0;">บันทึกข้อมูล</button>
             </div>
         </div>
 
         <div id="absenteePage" class="page">
-            <div id="absenteeList"></div>
+            <div class="card" style="margin-top:20px;">
+                <div id="absenteeList"></div>
+            </div>
         </div>
 
         <div id="adminPage" class="page">
-            <div class="card">
+            <div class="card" style="margin-top:20px;">
                 <h3>⚙️ ตั้งค่าระบบ (Admin)</h3>
-                <div style="text-align:left; margin-bottom:20px; padding:15px; background:#f9f9f9; border-radius:12px;">
-                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:5px;">เปลี่ยนโลโก้ใหม่:</label>
-                    <input type="file" id="logoUpload" accept="image/*" onchange="updateAssets()">
-                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-top:10px; margin-bottom:5px;">เปลี่ยนพื้นหลังใหม่:</label>
-                    <input type="file" id="bgUpload" accept="image/*" onchange="updateAssets()">
-                </div>
                 <div id="masterRecdList"></div>
-                <button onclick="handleLogout()" class="text-btn">กลับหน้าล็อกอิน</button>
+                <button onclick="goBack()" class="secondary-btn">กลับหน้าหลัก</button>
             </div>
         </div>
     </div>
