@@ -1,4 +1,6 @@
 const WEB_APP_URL = `https://script.google.com/macros/s/AKfycbxVxksslCAdSwHIC4opgEVNWBGxzT1D6ZKNbaHeosYCw5h0h34hWjS5cWPexU46XyYqFg/exec`;
+const DEFAULT_LOGO = "http://www.sarathum.ac.th/_files/webconfig/55100466_0_20260422-141609.png";
+const DEFAULT_BG = "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=2000"; // ใส่ลิงก์สำรองที่ชัวร์ไว้ก่อน
 
 let fetchedData = [];
 const studentMaster = [
@@ -29,7 +31,7 @@ window.handleLogin = () => {
     const pin = document.getElementById('pinInput').value;
     if(pin === '1234') showPage('gradePage');
     else if(pin === '55140') { showPage('adminPage'); renderAdmin(); }
-    else document.getElementById('loginError').innerText = 'รหัสผิดพลาด';
+    else document.getElementById('loginError').innerText = 'รหัสผ่านไม่ถูกต้อง';
 };
 
 window.handleLogout = () => { document.getElementById('pinInput').value = ''; showPage('loginPage'); };
@@ -37,7 +39,7 @@ window.goBack = () => showPage('gradePage');
 
 window.selectGrade = (g) => {
     curGrade = g;
-    document.getElementById('targetGrade').innerText = 'มัธยมศึกษาปีที่ ' + g.replace('M','');
+    document.getElementById('targetGrade').innerText = 'ชั้นมัธยมศึกษาปีที่ ' + g.replace('M','');
     tempCheck = {};
     renderList();
     showPage('attendancePage');
@@ -67,28 +69,32 @@ window.confirmSave = async () => {
     const log = { date: new Date().toLocaleDateString('th-TH'), time: new Date().toLocaleTimeString('th-TH'), grade: curGrade, data: tempCheck };
     try {
         await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(log) });
-        alert('บันทึกสำเร็จ'); showPage('gradePage');
-    } catch (e) { alert('ผิดพลาด'); }
+        alert('บันทึกข้อมูลเรียบร้อยแล้ว'); showPage('gradePage');
+    } catch (e) { alert('เกิดข้อผิดพลาดในการบันทึก'); }
 };
 
 window.viewAbsenteeReport = async () => {
     showPage('absenteePage');
     const container = document.getElementById('absenteeList');
-    container.innerHTML = 'กำลังโหลด...';
+    container.innerHTML = `
+        <button onclick="goBack()" style="background:#666; color:white; margin-bottom:15px;">⬅️ ย้อนกลับ</button>
+        <div id="reportLoadStatus">กำลังโหลดประวัติวันนี้...</div>
+    `;
     try {
         const res = await fetch(WEB_APP_URL);
         const data = await res.json();
         const logs = data.slice().reverse();
-        container.innerHTML = logs.length === 0 ? 'ไม่มีประวัติของวันนี้' : '';
+        const loader = document.getElementById('reportLoadStatus');
+        loader.innerHTML = logs.length === 0 ? 'ยังไม่มีการเช็คชื่อในวันนี้' : '';
         logs.forEach(h => {
             const div = document.createElement('div');
             div.className = 'st-row';
-            div.innerHTML = `<strong>ชั้น ${h.grade}</strong> (${h.time})<br>
-                <span style="color:red; font-size:0.8rem">ขาด: ${h.a || '-'}</span><br>
-                <span style="color:orange; font-size:0.8rem">สาย: ${h.l || '-'}</span>`;
-            container.appendChild(div);
+            div.innerHTML = `<strong>ชั้น ${h.grade}</strong> (เวลา ${h.time})<br>
+                <span style="color:red; font-size:0.85rem;">ขาด: ${h.a || '-'}</span> | 
+                <span style="color:orange; font-size:0.85rem;">สาย: ${h.l || '-'}</span>`;
+            loader.appendChild(div);
         });
-    } catch (e) { container.innerHTML = 'Error'; }
+    } catch (e) { document.getElementById('reportLoadStatus').innerText = 'ไม่สามารถดึงข้อมูลได้'; }
 };
 
 window.renderAdmin = async () => {
@@ -98,18 +104,15 @@ window.renderAdmin = async () => {
         const res = await fetch(WEB_APP_URL + "?action=getArchive");
         const data = await res.json();
         fetchedData = data;
-        container.innerHTML = `<button onclick="downloadExcel()" style="width:100%; padding:10px; background:#2e7d32; color:white; border:none; border-radius:10px; margin-bottom:15px;">โหลด Excel (คลังสำรอง)</button>`;
-        if (data.length === 0) {
-            container.innerHTML += '<p>คลังยังว่างเปล่า</p>';
-            return;
-        }
+        container.innerHTML = `<button onclick="downloadExcel()" style="background:#2e7d32; color:white; margin-bottom:15px;">💾 ดาวน์โหลด Excel (คลังสำรอง)</button>`;
+        if (data.length === 0) { container.innerHTML += '<p>คลังว่างเปล่า</p>'; return; }
         data.slice().reverse().forEach(h => {
             const d = document.createElement('div');
-            d.style.cssText = "background:white; padding:10px; border-radius:10px; margin-bottom:5px; font-size:0.8rem; border-left:4px solid #7c4dff;";
+            d.style.cssText = "background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:5px; font-size:0.85rem; border-left:4px solid #7c4dff;";
             d.innerHTML = `<strong>${h.grade}</strong> | ${h.date} | ขาด: ${h.a || '-'}`;
             container.appendChild(d);
         });
-    } catch (e) { container.innerHTML = 'Error'; }
+    } catch (e) { container.innerHTML = 'โหลดคลังล้มเหลว'; }
 };
 
 window.downloadExcel = () => {
@@ -128,152 +131,11 @@ window.updateAssets = () => {
 };
 
 function applyUI() {
-    const l = localStorage.getItem('ob_logo');
-    const b = localStorage.getItem('ob_bg');
-    if(l) document.getElementById('appLogo').src = l;
-    if(b) document.getElementById('bgOverlay').style.backgroundImage = `url(${b})`;
+    const l = localStorage.getItem('ob_logo') || DEFAULT_LOGO;
+    const b = localStorage.getItem('ob_bg') || DEFAULT_BG;
+    const logoImg = document.getElementById('appLogo');
+    const bgDiv = document.getElementById('bgOverlay');
+    if(logoImg) logoImg.src = l;
+    if(bgDiv) bgDiv.style.backgroundImage = `url('${b}')`;
 }
 applyUI();
-window.viewAbsenteeReport = async () => {
-    showPage('absenteePage');
-    const container = document.getElementById('absenteeList');
-    
-    container.innerHTML = `
-        <div style="margin-bottom:15px;">
-            <button onclick="goBack()" style="width:100%; padding:10px; background:#666; color:white; border:none; border-radius:10px; cursor:pointer;">⬅️ ย้อนกลับ</button>
-        </div>
-        <div id="reportContent">กำลังโหลด...</div>
-    `;
-    
-    const reportContent = document.getElementById('reportContent');
-    try {
-        const res = await fetch(WEB_APP_URL);
-        const data = await res.json();
-        const logs = data.slice().reverse();
-        reportContent.innerHTML = logs.length === 0 ? 'ไม่มีประวัติของวันนี้' : '';
-        logs.forEach(h => {
-            const div = document.createElement('div');
-            div.className = 'st-row';
-            div.innerHTML = `<strong>ชั้น ${h.grade}</strong> (${h.time})<br>
-                <span style="color:red; font-size:0.8rem">ขาด: ${h.a || '-'}</span><br>
-                <span style="color:orange; font-size:0.8rem">สาย: ${h.l || '-'}</span>`;
-            reportContent.appendChild(div);
-        });
-    } catch (e) { reportContent.innerHTML = 'Error'; }
-};
-
-window.renderAdmin = async () => {
-    const container = document.getElementById('masterRecdList');
-    container.innerHTML = 'กำลังโหลด...';
-    try {
-        const res = await fetch(WEB_APP_URL + "?action=getArchive");
-        const data = await res.json();
-        fetchedData = data;
-        container.innerHTML = `
-            <button onclick="handleLogout()" style="width:100%; padding:10px; background:#666; color:white; border:none; border-radius:10px; margin-bottom:10px; cursor:pointer;">⬅️ ออกจากระบบแอดมิน</button>
-            <button onclick="downloadExcel()" style="width:100%; padding:10px; background:#2e7d32; color:white; border:none; border-radius:10px; margin-bottom:15px; cursor:pointer;">💾 โหลด Excel (คลังสำรอง)</button>
-        `;
-        if (data.length === 0) {
-            container.innerHTML += '<p>คลังยังว่างเปล่า</p>';
-            return;
-        }
-        data.slice().reverse().forEach(h => {
-            const d = document.createElement('div');
-            d.style.cssText = "background:white; padding:10px; border-radius:10px; margin-bottom:5px; font-size:0.8rem; border-left:4px solid #7c4dff;";
-            d.innerHTML = `<strong>${h.grade}</strong> | ${h.date} | ขาด: ${h.a || '-'}`;
-            container.appendChild(d);
-        });
-    } catch (e) { container.innerHTML = 'Error'; }
-};
-window.viewAbsenteeReport = async () => {
-    showPage('absenteePage');
-    const container = document.getElementById('absenteeList');
-    
-    container.innerHTML = `
-        <div style="margin-bottom:15px;">
-            <button onclick="goBack()" style="width:100%; padding:12px; background:#4a4a4a; color:white; border:none; border-radius:12px; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <span>⬅️</span> ย้อนกลับหน้าหลัก
-            </button>
-        </div>
-        <div id="reportContent">กำลังโหลดข้อมูล...</div>
-    `;
-    
-    const reportContent = document.getElementById('reportContent');
-    try {
-        const res = await fetch(WEB_APP_URL);
-        const data = await res.json();
-        const logs = data.slice().reverse();
-        
-        if (logs.length === 0) {
-            reportContent.innerHTML = `
-                <div style="text-align:center; padding:20px; color:#888;">
-                    <p>📅 วันนี้ยังไม่มีการบันทึกข้อมูล</p>
-                </div>`;
-            return;
-        }
-
-        reportContent.innerHTML = '';
-        logs.forEach(h => {
-            const div = document.createElement('div');
-            div.className = 'st-row';
-            div.style.marginBottom = '10px';
-            div.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong>ชั้น ${h.grade}</strong>
-                    <span style="font-size:0.75rem; color:#666;">⏰ ${h.time}</span>
-                </div>
-                <div style="margin-top:8px; border-top:1px dashed #eee; padding-top:8px;">
-                    <span style="color:red; font-size:0.8rem; display:block;">❌ ขาด: ${h.a || '-'}</span>
-                    <span style="color:orange; font-size:0.8rem; display:block;">⚠️ สาย: ${h.l || '-'}</span>
-                    <span style="color:blue; font-size:0.8rem; display:block;">📝 ลา: ${h.v || '-'}</span>
-                </div>`;
-            reportContent.appendChild(div);
-        });
-    } catch (e) { 
-        reportContent.innerHTML = '<div style="color:red; text-align:center;">⚠️ ไม่สามารถโหลดข้อมูลได้</div>'; 
-    }
-};
-
-window.renderAdmin = async () => {
-    const container = document.getElementById('masterRecdList');
-    container.innerHTML = '<div style="text-align:center; padding:20px;">กำลังเข้าถึงคลังข้อมูล...</div>';
-    
-    try {
-        const res = await fetch(WEB_APP_URL + "?action=getArchive");
-        const data = await res.json();
-        fetchedData = data;
-
-        container.innerHTML = `
-            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
-                <button onclick="handleLogout()" style="width:100%; padding:12px; background:#eeeeee; color:#333; border:none; border-radius:12px; cursor:pointer; font-weight:bold;">🏠 กลับหน้าล็อกอิน</button>
-                <button onclick="downloadExcel()" style="width:100%; padding:12px; background:#2e7d32; color:white; border:none; border-radius:12px; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:8px;">
-                    <span>💾</span> ดาวน์โหลดคลัง Excel ทั้งหมด
-                </button>
-            </div>
-            <div style="font-size:0.9rem; font-weight:bold; margin-bottom:10px; color:#555;">📦 ประวัติในคลังสำรอง:</div>
-            <div id="archiveContent"></div>
-        `;
-
-        const archiveContent = document.getElementById('archiveContent');
-        if (data.length === 0) {
-            archiveContent.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">คลังข้อมูลว่างเปล่า</p>';
-            return;
-        }
-
-        data.slice().reverse().forEach(h => {
-            const d = document.createElement('div');
-            d.style.cssText = "background:white; padding:12px; border-radius:12px; margin-bottom:8px; font-size:0.8rem; border-left:5px solid #7c4dff; box-shadow:0 2px 6px rgba(0,0,0,0.05);";
-            d.innerHTML = `
-                <div style="display:flex; justify-content:space-between;">
-                    <strong>ห้อง ${h.grade}</strong>
-                    <span>📅 ${h.date}</span>
-                </div>
-                <div style="color:#666; margin-top:4px;">🕒 เวลา: ${h.time}</div>
-                <div style="color:red; margin-top:4px;">ขาด: ${h.a || '-'}</div>
-            `;
-            archiveContent.appendChild(d);
-        });
-    } catch (e) { 
-        container.innerHTML = '<div style="color:red; text-align:center;">⚠️ เกิดข้อผิดพลาดในการโหลดคลัง</div>'; 
-    }
-};
