@@ -15,7 +15,7 @@
         
         <div id="loginPage" class="page active">
             <div class="card">
-                <img id="appLogo" src="http://www.sarathum.ac.th/_files/webconfig/55100466_0_20260422-141609.png/100" alt="Logo">
+                <img id="appLogo" src="" alt="Logo">
                 <h2>ระบบเช็คชื่อนักเรียน</h2>
                 <input type="password" id="pinInput" placeholder="กรอกรหัสผ่าน">
                 <button onclick="handleLogin()">เข้าสู่ระบบ</button>
@@ -50,8 +50,17 @@
         </div>
 
         <div id="adminPage" class="page">
-            <h3>ระบบจัดการคลังข้อมูล</h3>
-            <div id="masterRecdList"></div>
+            <div class="card">
+                <h3>⚙️ ตั้งค่าระบบ (Admin)</h3>
+                <div style="text-align:left; margin-bottom:20px; padding:15px; background:#f9f9f9; border-radius:12px;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:5px;">เปลี่ยนโลโก้ใหม่:</label>
+                    <input type="file" id="logoUpload" accept="image/*" onchange="updateAssets()">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-top:10px; margin-bottom:5px;">เปลี่ยนพื้นหลังใหม่:</label>
+                    <input type="file" id="bgUpload" accept="image/*" onchange="updateAssets()">
+                </div>
+                <div id="masterRecdList"></div>
+                <button onclick="handleLogout()" class="text-btn">กลับหน้าล็อกอิน</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
