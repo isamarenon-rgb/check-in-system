@@ -2,7 +2,36 @@
     --main: #7c4dff;
     --bg: #f5f7fb;
     --success: #2e7d32;
+    /* เพิ่มสีใหม่สำหรับธีมม่วงเหลือง */
+    --accent-yellow: #ffdb01; 
 }
+
+/* 1. เปลี่ยนสีพื้นหลังเป็นโทนม่วง-เหลือง (ไล่เฉดสี) */
+#bgOverlay {
+    position: fixed; 
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* ใช้ Gradient ม่วงไปเหลืองแทนรูปเดิม หรือจะทับรูปเดิมก็ได้ครับ */
+    background: linear-gradient(135deg, #4b0082 0%, #7c4dff 50%, #ffdb01 100%);
+    background-size: cover; 
+    z-index: -1;
+    opacity: 0.9; /* ปรับความเข้มจางตามชอบ */
+}
+
+/* 2. ปรับนาฬิกาให้ชัดเป๊ะ */
+#digitalClock { 
+    text-align: center; 
+    font-size: 3.5rem; /* ขยายขนาดให้ใหญ่ขึ้น */
+    font-weight: 700; 
+    color: var(--accent-yellow); /* เปลี่ยนเป็นสีเหลืองทอง */
+    /* ใส่เงาหลายชั้นเพื่อให้ตัวเลขดู "เรืองแสง" และอ่านง่ายทุกสภาพแสง */
+    text-shadow: 
+        0 0 10px rgba(255, 219, 1, 0.5),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 15px; 
+    letter-spacing: 2px;
+}
+
+/* --- ส่วนที่เหลือคงเดิมตามที่คุณครูส่งมา --- */
 
 * { 
     box-sizing: border-box; 
@@ -15,17 +44,6 @@ body {
     overflow-x: hidden; 
 }
 
-/* พื้นหลังแบบจางๆ */
-#bgOverlay {
-    position: fixed; 
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: url('https://scontent.fbkk22-2.fna.fbcdn.net/v/t39.30808-6/461149451_122204696462373468_3313936640579708918_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=8v7k9Q2_P_YQ7kNvgE6vG5N&_nc_zt=23&_nc_ht=scontent.fbkk22-2.fna&_nc_gid=A_uR_3R5E5u7D_8p3R5_B_D&oh=00_AYC_Q_K_D_D_D&oe=664C_D_D');
-    background-size: cover; 
-    background-position: center; 
-    z-index: -1;
-    filter: brightness(0.6);
-}
-
 #app { 
     max-width: 480px; 
     margin: auto; 
@@ -33,22 +51,14 @@ body {
     min-height: 100vh; 
 }
 
-/* --- จัดการการแสดงผลทีละหน้า --- */
-.page { 
-    display: none; 
-}
-
-.page.active { 
-    display: block; 
-    animation: fadeIn 0.4s ease; 
-}
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
 
 @keyframes fadeIn { 
     from { opacity: 0; transform: translateY(10px); } 
     to { opacity: 1; transform: translateY(0); } 
 }
 
-/* การ์ดหลัก */
 .card { 
     background: rgba(255, 255, 255, 0.98); 
     padding: 30px; 
@@ -59,107 +69,43 @@ body {
     position: relative;
 }
 
-/* โลโก้ลอยเด่น */
 #appLogo { 
-    width: 110px; 
-    height: 110px; 
-    border-radius: 50%; 
-    object-fit: cover; 
-    border: 5px solid white; 
+    width: 110px; height: 110px; border-radius: 50%; 
+    object-fit: cover; border: 5px solid white; 
     box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
-    position: absolute; 
-    top: -55px; 
-    left: 50%; 
-    transform: translateX(-50%);
-    background: white;
+    position: absolute; top: -55px; left: 50%; 
+    transform: translateX(-50%); background: white;
 }
 
-/* อินพุตและปุ่ม */
 input { 
-    width: 100%; 
-    padding: 15px; 
-    margin: 15px 0; 
-    border: 1px solid #ddd; 
-    border-radius: 15px; 
-    text-align: center; 
-    font-size: 1.1rem; 
+    width: 100%; padding: 15px; margin: 15px 0; 
+    border: 1px solid #ddd; border-radius: 15px; 
+    text-align: center; font-size: 1.1rem; 
 }
 
 button { 
-    width: 100%; 
-    padding: 16px; 
-    border: none; 
-    border-radius: 16px; 
-    cursor: pointer; 
-    font-weight: 600; 
-    transition: 0.2s;
+    width: 100%; padding: 16px; border: none; 
+    border-radius: 16px; cursor: pointer; 
+    font-weight: 600; transition: 0.2s;
 }
 
 button:active { transform: scale(0.98); }
 
-/* ตารางเลือกชั้นเรียน */
-.grade-grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 12px; 
-    margin-top: 20px; 
-}
+.grade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.grade-btn { background: white; color: var(--main); border: 2px solid var(--main); font-size: 1.3rem; padding: 15px; }
 
-.grade-btn { 
-    background: white; 
-    color: var(--main); 
-    border: 2px solid var(--main); 
-    font-size: 1.3rem; 
-    padding: 15px; 
-}
+.st-row { background: white; padding: 15px; border-radius: 18px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.status-btn-group { display: flex; gap: 5px; margin-top: 10px; }
+.status-btn-group button { padding: 10px; font-size: 0.85rem; background: #eee; flex: 1; border-radius: 10px; }
 
-/* แถวรายชื่อนักเรียน */
-.st-row { 
-    background: white; 
-    padding: 15px; 
-    border-radius: 18px; 
-    margin-bottom: 12px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-}
-
-.status-btn-group { 
-    display: flex; 
-    gap: 5px; 
-    margin-top: 10px; 
-}
-
-.status-btn-group button { 
-    padding: 10px; 
-    font-size: 0.85rem; 
-    background: #eee; 
-    flex: 1; 
-    border-radius: 10px; 
-}
-
-/* สีสถานะ */
 .active-p { background: #4caf50 !important; color: white !important; }
 .active-l { background: #ff9800 !important; color: white !important; }
 .active-a { background: #f44336 !important; color: white !important; }
 .active-v { background: #2196f3 !important; color: white !important; }
 
-/* ปุ่มต่างๆ */
 .save-btn { background: var(--main); color: white; margin-top: 10px; }
 .back-btn { background: #666; color: white; }
 .secondary-btn { background: none; border: 2px solid var(--main); color: var(--main); margin-top: 15px; }
 .text-btn { background: none; color: #888; margin-top: 15px; text-decoration: underline; }
 
-/* นาฬิกา */
-#digitalClock { 
-    text-align: center; 
-    font-size: 2.2rem; 
-    font-weight: 600; 
-    color: white; 
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5); 
-    margin-bottom: 10px; 
-}
-
-/* หน้า Admin */
-#adminDataList {
-    background: #f9f9f9;
-    border-radius: 10px;
-}
+#adminDataList { background: #f9f9f9; border-radius: 10px; }
