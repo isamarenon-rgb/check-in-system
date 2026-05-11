@@ -1,4 +1,4 @@
-const WEB_APP_URL = `https://script.google.com/macros/s/AKfycbxVxksslCAdSwHIC4opgEVNWBGxzT1D6ZKNbaHeosYCw5h0h34hWjS5cWPexU46XyYqFg/exec`;
+const WEB_APP_URL = `https://script.google.com/macros/s/AKfycbxiz4Yy3GtuX-eTtgSSy93RiTh-BIvP3yPjmUqU2l84Vv9mfUf6a4QVxNIeVytnASkJlQ/exec`;
 
 let fetchedData = [];
 const studentMaster = [
